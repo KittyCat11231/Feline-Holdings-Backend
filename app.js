@@ -30,7 +30,7 @@ async function run() {
 }
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Request successful!');
 })
 
 app.listen(port, () => {
