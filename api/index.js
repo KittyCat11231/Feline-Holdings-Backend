@@ -8,8 +8,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/echoback', (req, res) => {
-    res.json({"firstValue": req.body.firstValue});
-    res.json({"secondValue": req.body.secondValue});
+    res.send('test');
 })
 
 app.listen(3000, () => {
