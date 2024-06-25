@@ -4,7 +4,7 @@ const app = express();
 require('dotenv').config();
 
 app.get('/', (req, res) => {
-    res.send('Express on Vercel');
+    res.json({"foo": "bar"});
 })
 
 app.listen(3000, () => {
