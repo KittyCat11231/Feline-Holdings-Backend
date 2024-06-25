@@ -32,7 +32,7 @@ app.get('/mbs/recent-videos', (req, res) => {
         part: 'snippet',
         channelId: 'UCdqFWzZ2sTEM3svKajyk9Lg',
         order: 'date',
-        maxResults: 10,
+        maxResults: 5,
     })
     .then(results => {
         res.send(results.data.items);
