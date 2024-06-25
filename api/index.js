@@ -9,7 +9,8 @@ app.get('/', (req, res) => {
 
 app.post('/echoback', (req, res) => {
     res.json({
-        "foo": "bar"
+        "firstValue": req.body.firstValue,
+        "secondValue": req.body.secondValue,
     });
 })
 
