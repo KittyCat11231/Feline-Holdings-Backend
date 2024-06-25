@@ -14,7 +14,7 @@ app.get('/echoback', (req, res) => {
     })
 })
 
-app.get('intraroute', (req, res) => {
+app.get('/intraroute', (req, res) => {
     res.send('IntraRoute API coming soon.');
 })
 
