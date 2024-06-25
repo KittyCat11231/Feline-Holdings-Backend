@@ -8,9 +8,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/echoback', (req, res) => {
-    res.json({
-        "firstValue": req.body.firstValue
-    });
+    res.json({"foo": "bar"});
 })
 
 app.listen(3000, () => {
