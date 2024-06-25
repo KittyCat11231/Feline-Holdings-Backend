@@ -7,8 +7,15 @@ app.get('/', (req, res) => {
     res.json({"foo": "bar"});
 })
 
-app.post('/echoback', (req, res) => {
-    res.json({"foo": req.body.firstValue});
+app.get('/echoback', (req, res) => {
+    res.json({
+        "firstValue": req.query.firstValue,
+        "secondValue": req.query.secondValue
+    })
+})
+
+app.get('intraroute', (req, res) => {
+    res.send('IntraRoute API coming soon.');
 })
 
 app.listen(3000, () => {
