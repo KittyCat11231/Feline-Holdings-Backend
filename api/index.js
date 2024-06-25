@@ -46,9 +46,13 @@ app.get('/mbs/live-now', (req, res) => {
     axios.get('https://www.youtube.com/channel/UCdqFWzZ2sTEM3svKajyk9Lg')
     .then(response => {
         if (response.data.includes('hqdefault_live.jpg')) {
-            res.send('true');
+            res.json({
+                isLive: true
+            });
         } else {
-            res.send('false');
+            res.json({
+                isLive: false
+            });
         }
     })
     .catch(error => {
