@@ -3,6 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 
+const { MongoClient } = require('mongodb');
+const uri = require('./atlas_uri');
+
 const {google} = require('googleapis');
 
 const axios = require('axios');
@@ -11,6 +14,22 @@ const youtube = google.youtube({
     version: 'v3',
     auth: process.env.YT_API_KEY
 });
+
+const client = new MongoClient(uri);
+
+const dbname = 'felineHoldings';
+const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
+
+async function connectToDatabase() {
+    try {
+        await client.connect();
+        console.log(`Connected to the ${dbname} database.`);
+    } catch (error) {
+        console.error(`Error connecting to the ${dbname} database.`)
+    }
+}
+
+connectToDatabase();
 
 app.get('/', (req, res) => {
     res.json({"foo": "bar"});
@@ -28,6 +47,10 @@ app.get('/intraroute', (req, res) => {
 })
 
 app.get('/mbs/recent-videos', (req, res) => {
+    res.send(mbsRecentVideos.find());
+})
+
+/*app.get('/mbs/recent-videos-legacy', (req, res) => {
     youtube.search.list({
         part: 'snippet',
         channelId: 'UCdqFWzZ2sTEM3svKajyk9Lg',
@@ -40,7 +63,7 @@ app.get('/mbs/recent-videos', (req, res) => {
     .catch(error => {
         res.send(error);
     })
-})
+})*/
 
 app.get('/mbs/live-now', (req, res) => {
     axios.get('https://www.youtube.com/channel/UCdqFWzZ2sTEM3svKajyk9Lg')
