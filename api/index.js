@@ -51,8 +51,13 @@ app.get('/intraroute', (req, res) => {
 app.get('/mbs/recent-videos', (req, res) => {
     let videos;
     async function findVideos() {
-        videos = await mbsRecentVideos.find().toArray();
-        res.send(videos);
+        try {
+            videos = await mbsRecentVideos.find().toArray();
+            res.send(videos);
+        } catch (error) {
+            console.log(error);
+            res.send(error);
+        }
     }
     findVideos();
 })
