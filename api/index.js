@@ -31,6 +31,8 @@ async function connectToDatabase() {
 
 connectToDatabase();
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.json({"foo": "bar"});
 })
@@ -47,7 +49,12 @@ app.get('/intraroute', (req, res) => {
 })
 
 app.get('/mbs/recent-videos', (req, res) => {
-    res.send(mbsRecentVideos.find());
+    let videos;
+    async function findVideos() {
+        videos = await mbsRecentVideos.find().toArray();
+        res.send(videos);
+    }
+    findVideos();
 })
 
 /*app.get('/mbs/recent-videos-legacy', (req, res) => {
