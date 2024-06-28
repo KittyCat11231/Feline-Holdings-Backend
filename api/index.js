@@ -6,14 +6,7 @@ const app = express();
 const { MongoClient } = require('mongodb');
 const uri = require('../atlas_uri');
 
-const { google } = require('googleapis');
-
 const axios = require('axios');
-
-const youtube = google.youtube({
-    version: 'v3',
-    auth: process.env.YT_API_KEY
-});
 
 const client = new MongoClient(uri);
 
