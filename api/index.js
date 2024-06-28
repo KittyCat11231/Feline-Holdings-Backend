@@ -4,9 +4,9 @@ const express = require('express');
 const app = express();
 
 const { MongoClient } = require('mongodb');
-const uri = require('./atlas_uri');
+const uri = require('../atlas_uri');
 
-const {google} = require('googleapis');
+const { google } = require('googleapis');
 
 const axios = require('axios');
 
@@ -49,10 +49,9 @@ app.get('/intraroute', (req, res) => {
 })
 
 app.get('/mbs/recent-videos', (req, res) => {
-    let videos;
     async function findVideos() {
         try {
-            videos = await mbsRecentVideos.find({}).sort({ date: -1 }).toArray();
+            let videos = await mbsRecentVideos.find({}).sort({ date: -1 }).toArray();
             res.send(videos);
         } catch (error) {
             console.log(error);
@@ -61,21 +60,6 @@ app.get('/mbs/recent-videos', (req, res) => {
     }
     findVideos();
 })
-
-/*app.get('/mbs/recent-videos-legacy', (req, res) => {
-    youtube.search.list({
-        part: 'snippet',
-        channelId: 'UCdqFWzZ2sTEM3svKajyk9Lg',
-        order: 'date',
-        maxResults: 5,
-    })
-    .then(results => {
-        res.send(results.data.items);
-    })
-    .catch(error => {
-        res.send(error);
-    })
-})*/
 
 app.get('/mbs/live-now', (req, res) => {
     axios.get('https://www.youtube.com/channel/UCdqFWzZ2sTEM3svKajyk9Lg')
