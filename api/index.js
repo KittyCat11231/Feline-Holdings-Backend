@@ -52,6 +52,7 @@ app.get('/mbs/recent-videos', (req, res) => {
     async function findVideos() {
         try {
             let videos = await mbsRecentVideos.find({}).sort({ date: -1 }).toArray();
+            console.log(videos);
             res.send(videos);
         } catch (error) {
             console.log(error);
