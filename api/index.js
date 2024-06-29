@@ -3,6 +3,10 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 
+const bcrypt = require('bcrypt');
+
+const addRecentVideo = require('../add-video-api');
+
 const { MongoClient } = require('mongodb');
 const uri = require('../atlas_uri');
 
@@ -27,7 +31,23 @@ connectToDatabase();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.json({"foo": "bar"});
+    res.send('You have reached the API of Feline Holdings!')
+})
+
+app.post('/mbs/add-video', async (req, res) => {
+    bcrypt.compare(req.body.password, process.env.MY_PASSWORD_HASH, (err, result) => {
+        try {
+            if (result === false) {
+                res.send(result);
+            } else {
+                addRecentVideo();
+                res.send(result);
+            }
+        } catch (error) {
+            console.error(error);
+            res.send(error);
+        }
+    })
 })
 
 app.get('/echoback', (req, res) => {

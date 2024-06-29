@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 
 const { MongoClient } = require('mongodb');
-const uri = require('../atlas_uri');
+const uri = require('./atlas_uri');
 
 const { google } = require('googleapis');
 
