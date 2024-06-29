@@ -5,7 +5,7 @@ const app = express();
 
 const bcrypt = require('bcrypt');
 
-const addRecentVideo = require('../add-video-api');
+const addVideoToDatabase = require('../add-video-api');
 
 const { MongoClient } = require('mongodb');
 const uri = require('../atlas_uri');
@@ -40,7 +40,7 @@ app.post('/mbs/add-video', async (req, res) => {
             if (result === false) {
                 res.send(result);
             } else {
-                addRecentVideo();
+                addVideoToDatabase();
                 res.send(result);
             }
         } catch (error) {

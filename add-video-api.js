@@ -18,7 +18,7 @@ const client = new MongoClient(uri);
 const dbname = 'felineHoldings';
 const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
 
-async function connectToDatabase() {
+async function addVideoToDatabase() {
     try {
         await client.connect();
         console.log(`Connected to the ${dbname} database.`);
@@ -145,15 +145,9 @@ async function connectToDatabase() {
     } catch (error) {
         console.error(`Error connecting to the ${dbname} database.`);
         console.error(error);
+    } finally {
+        client.close();
     }
 }
 
-async function addRecentVideo() {
-    await connectToDatabase();
-    console.log('Terminating in 5 seconds.');
-    setTimeout(() => {
-        process.exit();
-    }, '5000');
-}
-
-module.exports = addRecentVideo;
+module.exports = addVideoToDatabase();
