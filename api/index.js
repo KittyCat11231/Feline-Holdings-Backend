@@ -38,11 +38,12 @@ app.get('/', (req, res) => {
 app.post('/mbs/add-video', async (req, res) => {
     bcrypt.compare(req.body.password, process.env.MY_PASSWORD_HASH, (err, result) => {
         try {
+            console.log(result);
             if (result === false) {
-                res.send(result);
+                res.send(result.body);
             } else {
                 addVideoToDatabase();
-                res.send(result);
+                res.send(result.body);
             }
         } catch (error) {
             console.error(error);
