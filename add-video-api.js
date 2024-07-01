@@ -150,4 +150,4 @@ async function addVideoToDatabase() {
     }
 }
 
-module.exports = addVideoToDatabase();
+module.exports = addVideoToDatabase;
