@@ -12,7 +12,7 @@ const uri = require('../atlas_uri');
 
 const axios = require('axios');
 
-const client = new MongoClient(uri);
+const client = new MongoClient(process.env.MONGODB_URI);
 
 const dbname = 'felineHoldings';
 const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
