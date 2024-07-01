@@ -12,7 +12,7 @@ const youtube = google.youtube({
     auth: process.env.YT_API_KEY
 })
 
-async function addVideoToDatabase(mbsRecentVideos) {
+async function addVideoToDatabase(res, mbsRecentVideos) {
     async function findStoredVideoId() {
         try {
             let video = await mbsRecentVideos.find({}).sort({ date: -1 }).toArray();
@@ -113,6 +113,7 @@ async function addVideoToDatabase(mbsRecentVideos) {
                     try {
                         const result = await mbsRecentVideos.insertOne(videoObj);
                         console.log(result);
+                        res.send(result);
                     } catch (error) {
                         console.log(error);
                     }

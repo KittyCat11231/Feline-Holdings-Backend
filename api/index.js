@@ -45,9 +45,7 @@ app.post('/mbs/add-video', async (req, res) => {
             if (result === false) {
                 res.send(false);
             } else {
-                console.log('trying to run addVideoToDatabase()')
-                addVideoToDatabase(mbsRecentVideos);
-                res.send(true);
+                addVideoToDatabase(res, mbsRecentVideos);
             }
         } catch (error) {
             console.error(error);
