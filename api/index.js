@@ -23,6 +23,7 @@ async function connectToDatabase() {
         console.log(`Connected to the ${dbname} database.`);
     } catch (error) {
         console.error(`Error connecting to the ${dbname} database.`)
+        console.error(error);
     }
 }
 
