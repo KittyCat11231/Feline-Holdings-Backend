@@ -42,7 +42,11 @@ app.get('/echoback', (req, res) => {
 })
 
 app.get('/intraroute', (req, res) => {
-    res.send('IntraRoute API coming soon.');
+    if (req.query.start && req.query.end) {
+        res.send(`Once IntraRoute's API is complete, this request will return a route from ${req.query.start} to ${req.query.end}`);
+    } else {
+        res.send('IntraRoute API coming soon.')
+    }
 })
 
 app.get('/mbs/recent-videos', (req, res) => {
