@@ -47,7 +47,7 @@ function dijkstra(startId, endId, stopsData) {
             }
         });
 
-        unexploredStops = helpers.removeFromArray(currentStop, start);
+        unexploredStops = helpers.removeFromArray(unexploredStops, currentStop);
 
         let unexploredShortestTimes = [];
 
