@@ -33,31 +33,49 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
     for (let k = 2; k <= kthShortest; k++) {
         let currentShortestPath = paths[paths.length - 1];
 
-        currentShortestPath.forEach(currentSegment => {
+        currentShortestPath.path.forEach(currentSegment => {
             // need to reset the value of allStops at the start of every loop pass
             allStops = helpers.deepCopy(stopsData);
-            
+
             spurNode = stopsMap.get(currentSegment.stop1id);
             nodeAfterSpur = stopsMap.get(currentSegment.stop2id);
 
             let pathToSpur = [];
 
-            currentShortestPath.forEach(segment => {
-                pathToSpur.push(segment);
-                if (segment.stop2id === spurNode) {
-                    return;
-                }
-            })
+            if (startId !== spurNode.id) {
+                currentShortestPath.path.forEach(segment => {
+                    pathToSpur.push(segment);
+                    if (segment.stop2id === spurNode.id) {
+                        return;
+                    }
+                })
+            }
+
+            let deadEnd = false;
 
             spurNode.adjacentStops.forEach(adjStop => {
-                if (adjStop.id === nodeAfterSpur.id) {
+                if (adjStop.id === nodeAfterSpur.id && spurNode.adjacentStops.length > 1) {
                     adjStop.weight = Infinity;
+                    return;
+                } else if (adjStop.id === nodeAfterSpur.id && spurNode.adjacentStops.length === 1) {
+                    deadEnd = true;
                     return;
                 }
             })
 
+            if (deadEnd === true) {
+                return;
+            }
+
             let pathAfterSpur = dijkstra(spurNode.id, endId, allStops);
-            let combinedPath = pathToSpur.concat(pathAfterSpur);
+            let combinedPath;
+
+            if (pathToSpur.length > 0) {
+                combinedPath = pathToSpur.concat(pathAfterSpur);
+            } else {
+                combinedPath = pathAfterSpur;
+            }
+
             let combinedPathTotalWeight = 0;
             
             combinedPath.forEach(segment => {
@@ -71,9 +89,9 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
         let candidatePathWeight = Infinity;
 
         possiblePaths.forEach(path => {
-            if (path.weight < candidatePathWeight) {
+            if (path.totalWeight < candidatePathWeight) {
                 candidatePath = path;
-                candidatePathWeight = path.weight;
+                candidatePathWeight = path.totalWeight;
             }
         })
 
