@@ -14,11 +14,12 @@ function dijkstra(startId, endId, stopsData) {
     })
 
     class PathSegment {
-        constructor(stop1id, stop2id, routesIds, stopCount) {
+        constructor(stop1id, stop2id, routesIds, stopCount, weight) {
             this.stop1id = stop1id;
             this.stop2id = stop2id;
             this.routesIds = routesIds;
             this.stopCount = stopCount;
+            this.weight = weight;
         }
     }
 
@@ -39,7 +40,7 @@ function dijkstra(startId, endId, stopsData) {
             let adjStop = stopsMap.get(stop.id);
             let adjStopNewTime = currentStop.shortestTime + stop.weight;
 
-            let adjStopPathLastLeg = new PathSegment(currentStop.id, stop.id, stop.routes, 1);
+            let adjStopPathLastLeg = new PathSegment(currentStop.id, stop.id, stop.routes, 1, stop.weight);
             
             if (adjStopNewTime < adjStop.shortestTime) {
                 adjStop.path = helpers.deepCopy(currentStop.path);

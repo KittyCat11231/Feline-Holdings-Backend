@@ -33,8 +33,7 @@ async function routefinder() {
                 }
             })
         })
-        let prePath = dijkstra('railASN', 'railSSR', stopsData);
-        let path = filterPathRoutes(prePath);
+        let path = kShortestPaths('railASN', 'railSSR', stopsData, 2);
         console.log(path);
     } catch (error) {
         console.error(error);

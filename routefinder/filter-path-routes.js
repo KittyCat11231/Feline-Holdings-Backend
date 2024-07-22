@@ -22,6 +22,7 @@ function filterPathRoutes(path) {
         if (helpers.deepEqual(path[i].routesIds, path[i + 1].routesIds)) {
             path[i].stop2id = path[i + 1].stop2id;
             path[i].stopCount++;
+            path[i].weight += path[i + 1].weight;
             path = helpers.removeFromArray(path, path[i + 1]);
         } else {
             i++;
