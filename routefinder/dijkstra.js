@@ -70,7 +70,7 @@ function dijkstra(startId, endId, stopsData) {
         }
 
         if (currentStop.id === currentStopAtStartOfLoop.id) {
-            console.error('New current stop assignment failed.', 'currentStop:', currentStop, 'allStops', allStops);
+            console.error('New current stop assignment failed.', 'currentStop:', currentStop);
             break;
         }
     }

@@ -3,7 +3,6 @@ const { helpers } = require('@kyle11231/helper-functions');
 
 const { MongoClient } = require('mongodb');
 const uri = require('../atlas_uri');
-console.log(uri);
 
 const client = new MongoClient(uri);
 
@@ -11,6 +10,7 @@ const dbname = 'felineHoldings';
 
 const { kShortestPaths } = require('./k-shortest-paths');
 const { dijkstra } = require('./dijkstra');
+const { filterPathRoutes } = require('./filter-path-routes');
 
 async function connectToDatabase() {
     try {
@@ -33,7 +33,8 @@ async function routefinder() {
                 }
             })
         })
-        let path = dijkstra('railASN', 'railSSR', stopsData)
+        let prePath = dijkstra('railASN', 'railSSR', stopsData);
+        let path = filterPathRoutes(prePath);
         console.log(path);
     } catch (error) {
         console.error(error);
