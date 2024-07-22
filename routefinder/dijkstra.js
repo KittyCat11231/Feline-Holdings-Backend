@@ -39,11 +39,12 @@ function dijkstra(startId, endId, stopsData) {
             let adjStop = stopsMap.get(stop.id);
             let adjStopNewTime = currentStop.shortestTime + stop.weight;
 
-            let pathToAdjStop = new PathSegment(currentStop.id, stop.id, stop.routes, 1);
+            let adjStopPathLastLeg = new PathSegment(currentStop.id, stop.id, stop.routes, 1);
             
             if (adjStopNewTime < adjStop.shortestTime) {
+                adjStop.path = currentStop.path;
                 adjStop.shortestTime = adjStopNewTime;
-                adjStop.path.push(pathToAdjStop);
+                adjStop.path.push(adjStopPathLastLeg);
             }
         });
 
@@ -77,7 +78,7 @@ function dijkstra(startId, endId, stopsData) {
     let path = helpers.deepCopy(end.path);
 
     for (let i = 0; i < (path.length - 1);) {
-        if (helpers.deepEqual(path[i].routes, path[i + 1].routes)) {
+        if (helpers.deepEqual(path[i].routesIds, path[i + 1].routesIds)) {
             path[i].stop2id = path[i + 1].stop2id;
             path[i].stopCount += 1;
             path = helpers.removeFromArray(path, path[i + 1]);

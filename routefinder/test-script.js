@@ -10,6 +10,7 @@ const client = new MongoClient(uri);
 const dbname = 'felineHoldings';
 
 const { kShortestPaths } = require('./k-shortest-paths');
+const { dijkstra } = require('./dijkstra');
 
 async function connectToDatabase() {
     try {
@@ -32,8 +33,8 @@ async function routefinder() {
                 }
             })
         })
-        let paths = kShortestPaths('railASN', 'railSSR', stopsData)
-        console.log(paths);
+        let path = dijkstra('railASN', 'railSSR', stopsData)
+        console.log(path);
     } catch (error) {
         console.error(error);
     }
