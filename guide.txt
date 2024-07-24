@@ -1,0 +1,7 @@
+find shortest path
+one by one, remove each edge used by the shortest path from the dataset and calculate the shortest route from the spur point to the end
+save each path in an array possiblePaths
+whichever of those is the shortest is the second shortest path
+repeat the same process with the second shortest path, putting all the possible paths generated in that same array possiblePaths
+whatever is the shortest is the third shortest path
+and so on

@@ -82,7 +82,19 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
                 combinedPathTotalWeight += segment.weight;
             })
 
-            possiblePaths.push(new PathWithWeight(combinedPath, combinedPathTotalWeight));
+            let possiblePath = new PathWithWeight(combinedPath, combinedPathTotalWeight);
+
+            let alreadyInPossiblePaths = false;
+
+            possiblePaths.forEach(path => {
+                if (helpers.deepEqual(path.path, possiblePath.path)) {
+                    alreadyInPossiblePaths = true;
+                }
+            })
+
+            if (alreadyInPossiblePaths === false) {
+                possiblePaths.push(possiblePath);
+            }
         })
 
         let candidatePath;
@@ -90,8 +102,19 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
 
         possiblePaths.forEach(path => {
             if (path.totalWeight < candidatePathWeight) {
-                candidatePath = path;
-                candidatePathWeight = path.totalWeight;
+                let alreadyInPaths = false;
+                paths.forEach(pathFromPathsArray => {
+                    if (helpers.deepEqual(path.path, pathFromPathsArray.path)) {
+                        alreadyInPaths = true;
+                        return;
+                    }
+                })
+                if (alreadyInPaths === false) {
+                    candidatePath = path;
+                    candidatePathWeight = path.totalWeight;
+                } else {
+                    possiblePaths = helpers.removeFromArray(possiblePaths, path);
+                }
             }
         })
 

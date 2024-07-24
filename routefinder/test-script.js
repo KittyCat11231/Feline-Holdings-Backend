@@ -34,7 +34,7 @@ async function routefinder() {
             })
         })
         console.log(new Date());
-        let paths = kShortestPaths('railASN', 'railSSR', stopsData, 2);
+        let paths = kShortestPaths('railASN', 'railSSR', stopsData, 5);
         console.log(paths);
         console.log(new Date());
     } catch (error) {
