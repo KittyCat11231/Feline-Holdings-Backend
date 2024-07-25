@@ -33,7 +33,7 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
     for (let k = 2; k <= kthShortest; k++) {
         let currentShortestPath = paths[paths.length - 1];
 
-        currentShortestPath.path.forEach(currentSegment => {
+        for (currentSegment of currentShortestPath.path) {
             // need to reset the value of allStops at the start of every loop pass
             allStops = helpers.deepCopy(stopsData);
 
@@ -43,28 +43,28 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
             let pathToSpur = [];
 
             if (startId !== spurNode.id) {
-                currentShortestPath.path.forEach(segment => {
+                for (segment of currentShortestPath.path) {
                     pathToSpur.push(segment);
                     if (segment.stop2id === spurNode.id) {
-                        return;
+                        break;
                     }
-                })
+                }
             }
 
             let deadEnd = false;
 
-            spurNode.adjacentStops.forEach(adjStop => {
+            for (adjStop of spurNode.adjacentStops) {
                 if (adjStop.id === nodeAfterSpur.id && spurNode.adjacentStops.length > 1) {
                     adjStop.weight = Infinity;
-                    return;
+                    break;
                 } else if (adjStop.id === nodeAfterSpur.id && spurNode.adjacentStops.length === 1) {
                     deadEnd = true;
-                    return;
+                    break;
                 }
-            })
+            }
 
             if (deadEnd === true) {
-                return;
+                break;
             }
 
             let pathAfterSpur = dijkstra(spurNode.id, endId, allStops);
@@ -95,20 +95,20 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
             if (alreadyInPossiblePaths === false) {
                 possiblePaths.push(possiblePath);
             }
-        })
+        }
 
         let candidatePath;
         let candidatePathWeight = Infinity;
 
-        possiblePaths.forEach(path => {
+        for (path of possiblePaths) {
             if (path.totalWeight < candidatePathWeight) {
                 let alreadyInPaths = false;
-                paths.forEach(pathFromPathsArray => {
+                for (pathFromPathsArray of paths) {
                     if (helpers.deepEqual(path.path, pathFromPathsArray.path)) {
                         alreadyInPaths = true;
-                        return;
+                        break;
                     }
-                })
+                }
                 if (alreadyInPaths === false) {
                     candidatePath = path;
                     candidatePathWeight = path.totalWeight;
@@ -116,7 +116,7 @@ function kShortestPaths(startId, endId, stopsData, kthShortest) {
                     possiblePaths = helpers.removeFromArray(possiblePaths, path);
                 }
             }
-        })
+        }
 
         paths.push(candidatePath);
         helpers.removeFromArray(possiblePaths, candidatePath);
