@@ -6,7 +6,7 @@ const app = express();
 const cors = require('cors');
 
 app.use(cors({
-    origin: 'http://felineholdings.com'
+    origin: 'https://felineholdings.com'
 }));
 
 const { MongoClient } = require('mongodb');
