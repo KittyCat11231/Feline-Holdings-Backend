@@ -11,6 +11,7 @@ const dbname = 'felineHoldings';
 const { kShortestPaths } = require('./k-shortest-paths');
 const { dijkstra } = require('./dijkstra');
 const { filterPathRoutes } = require('./filter-path-routes');
+const { findBestPath } = require('./find-best-path');
 
 async function connectToDatabase() {
     try {
@@ -34,8 +35,9 @@ async function routefinder() {
             })
         })
         console.log(new Date());
-        let paths = kShortestPaths('railASN', 'railSSR', stopsData, 5);
-        console.log(paths);
+        let paths = kShortestPaths('railASN', 'railSSR', stopsData, 30);
+        let path = findBestPath(paths);
+        console.log(path);
         console.log(new Date());
     } catch (error) {
         console.error(error);

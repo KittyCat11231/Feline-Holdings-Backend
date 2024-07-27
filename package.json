@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "api/index.js",
   "scripts": {
-    "devStart": "nodemon app.js"
+    "devStart": "nodemon api/index.js",
   },
   "author": "",
   "license": "ISC",
