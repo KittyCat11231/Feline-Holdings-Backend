@@ -17,7 +17,7 @@ async function isAuthorized(userKey, role) {
     return authorized;
 }
 
-async function doIfAuthorized(req, res, role, callback) {
+async function requireAuth(req, res, role, callback) {
     if (!req.body.key) {
         res.status(403).send('Request must include an API key.');
     } else {
@@ -30,4 +30,4 @@ async function doIfAuthorized(req, res, role, callback) {
     }
 }
 
-module.exports = { doIfAuthorized };
+module.exports = { requireAuth };

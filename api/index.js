@@ -38,7 +38,7 @@ async function connectToDatabase() {
 
 connectToDatabase();
 
-const  { doIfAuthorized } = require('../database-console/authorization');
+const  { requireAuth } = require('../database-console/authorization');
 
 app.use(express.json());
 
@@ -95,13 +95,13 @@ app.get('/mbs/live-now', (req, res) => {
 })
 
 app.post('/protected/admin', (req, res) => {
-    doIfAuthorized(req, res, 'admin', () => {
+    requireAuth(req, res, 'admin', () => {
         res.status(200).send('Authorization accepted!');
     })
 })
 
 app.post('/protected/blutransit', (req, res) => {
-    doIfAuthorized(req, res, 'bluTransit', () => {
+    requireAuth(req, res, 'bluTransit', () => {
         res.status(200).send('Authorization accepted!');
     })
 })
