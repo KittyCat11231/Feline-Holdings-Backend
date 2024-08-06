@@ -1,4 +1,5 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config({path: '../.env'});
 
 const express = require('express');
 const app = express();
@@ -21,6 +22,9 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 const dbname = 'felineHoldings';
 const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
 
+const mongoSanitize = require('express-mongo-sanitize');
+app.use(mongoSanitize());
+
 async function connectToDatabase() {
     try {
         await client.connect();
@@ -33,6 +37,8 @@ async function connectToDatabase() {
 }
 
 connectToDatabase();
+
+const  { doIfAuthorized } = require('../database-console/authorization');
 
 app.use(express.json());
 
@@ -85,6 +91,18 @@ app.get('/mbs/live-now', (req, res) => {
     .catch(error => {
         console.log(error);
         res.send(error);
+    })
+})
+
+app.post('/protected/admin', (req, res) => {
+    doIfAuthorized(req, res, 'admin', () => {
+        res.status(200).send('Authorization accepted!');
+    })
+})
+
+app.post('/protected/blutransit', (req, res) => {
+    doIfAuthorized(req, res, 'bluTransit', () => {
+        res.status(200).send('Authorization accepted!');
     })
 })
 

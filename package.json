@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "api/index.js",
   "scripts": {
-    "devStart": "nodemon api/index.js",
+    "devStart": "nodemon api/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-mongo-sanitize": "^2.2.0",
     "googleapis": "^140.0.0",
     "mongodb": "^6.7.0",
     "node-fetch": "^3.3.2"
