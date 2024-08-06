@@ -1,0 +1,22 @@
+{
+    "bluTransit": {
+        "collections": [
+            "bluAirRoutes",
+            "bluAirStops",
+            "bluBusRoutes",
+            "bluBusStops",
+            "bluRailRoutes",
+            "bluRailStops",
+            "segvilleMetroRoutes",
+            "segvilleMetroStops",
+            "bluBikeRoutes",
+            "bluBikeStops",
+            "southWeastPacificRoutes",
+            "southWeastPacificStops",
+            "ltaRavennaRoutes",
+            "ltaRavennaStops",
+            "southernPlainsRailRoutes",
+            "southernPlainsRailStops"
+        ]
+    }
+}

@@ -20,7 +20,6 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 });
 
 const dbname = 'felineHoldings';
-const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
 
 const mongoSanitize = require('express-mongo-sanitize');
 app.use(mongoSanitize());
@@ -38,7 +37,8 @@ async function connectToDatabase() {
 
 connectToDatabase();
 
-const  { requireAuth } = require('../database-console/authorization');
+const { requireAuth } = require('../database-console/authorization');
+const { getCollectionNames } = require('../database-console/search');
 
 app.use(express.json());
 
@@ -62,6 +62,7 @@ app.get('/intraroute', (req, res) => {
 })
 
 app.get('/mbs/recent-videos', (req, res) => {
+    const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
     async function findVideos() {
         try {
             let videos = await mbsRecentVideos.find({}).sort({ date: -1 }).toArray();
@@ -106,6 +107,22 @@ app.post('/protected/blutransit', (req, res) => {
     })
 })
 
+app.post('/database/get-collection-names', (req, res) => {
+    if (!req.body.key) {
+        res.status(403).send('Authorization failed.');
+    } else {
+        async function response() {
+            let database = client.db(dbname);
+            let collectionNames = await getCollectionNames(req.body.key, database);
+            if (collectionNames) {
+                res.status(200).send(collectionNames);
+            } else {
+                res.status(403).send('Authorization failed.');
+            }
+        }
+        response();
+    }
+});
 
 app.listen(3000, () => {
     console.log(`Listening on port 3000.`);
