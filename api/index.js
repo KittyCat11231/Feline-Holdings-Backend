@@ -19,6 +19,8 @@ const client = new MongoClient(process.env.MONGODB_URI, {
     connectTimeoutMS: 100000,
 });
 
+const { updateIntraRoute } = require('../database-console/update-intraroute');
+
 const dbname = 'felineHoldings';
 
 const mongoSanitize = require('express-mongo-sanitize');
@@ -123,6 +125,12 @@ app.post('/database/get-collection-names', (req, res) => {
         response();
     }
 });
+
+app.post('/database/intraroute', (req, res) => {
+  requireAuth(req, res, 'admin', () => {
+    updateIntraRoute(client, res);
+  })
+})
 
 app.listen(3000, () => {
     console.log(`Listening on port 3000.`);
