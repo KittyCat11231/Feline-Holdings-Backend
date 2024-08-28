@@ -24,7 +24,6 @@ const { updateIntraRoute } = require('../database-console/update-intraroute');
 const dbname = 'felineHoldings';
 
 const mongoSanitize = require('express-mongo-sanitize');
-app.use(mongoSanitize());
 
 async function connectToDatabase() {
     try {
@@ -40,7 +39,7 @@ async function connectToDatabase() {
 connectToDatabase();
 
 const { requireAuth } = require('../database-console/authorization');
-const { getCollectionNames } = require('../database-console/search');
+const { getCollectionNames, getCollectionData } = require('../database-console/search');
 
 app.use(express.json());
 
@@ -99,19 +98,21 @@ app.get('/mbs/live-now', (req, res) => {
 
 app.post('/protected/admin', (req, res) => {
     requireAuth(req, res, 'admin', () => {
-        res.status(200).send('Authorization accepted!');
+        res.status(200).send('Authentication accepted!');
     })
 })
 
 app.post('/protected/blutransit', (req, res) => {
     requireAuth(req, res, 'bluTransit', () => {
-        res.status(200).send('Authorization accepted!');
+        res.status(200).send('Authentication accepted!');
     })
 })
 
 app.post('/database/get-collection-names', (req, res) => {
+    console.log(mongoSanitize.has(req))
+    mongoSanitize.sanitize(req);
     if (!req.body.key) {
-        res.status(403).send('Authorization failed.');
+        res.status(403).send('Not authorized.');
     } else {
         async function response() {
             let database = client.db(dbname);
@@ -119,17 +120,28 @@ app.post('/database/get-collection-names', (req, res) => {
             if (collectionNames) {
                 res.status(200).send(collectionNames);
             } else {
-                res.status(403).send('Authorization failed.');
+                res.status(403).send('Not authorized.');
             }
         }
         response();
     }
 });
 
+<<<<<<< Updated upstream
 app.post('/database/intraroute', (req, res) => {
   requireAuth(req, res, 'admin', () => {
     updateIntraRoute(client, res);
   })
+=======
+app.post('/database/get-collection-data', (req, res) => {
+    if (!req.body.key) {
+        res.status(403).send('Authorization failed.');
+    } else {
+        async function response() {
+            let database = client.db(dbname);
+        }
+    }
+>>>>>>> Stashed changes
 })
 
 app.listen(3000, () => {

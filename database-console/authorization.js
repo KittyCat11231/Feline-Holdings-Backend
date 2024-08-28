@@ -34,13 +34,13 @@ async function returnRole(userKey) {
 
 async function requireAuth(req, res, role, callback) {
     if (!req.body.key) {
-        res.status(403).send('Authorization failed.');
+        res.status(403).send('Not authorized.');
     } else {
         let authorized = await isAuthorized(req.body.key, role);
         if (authorized) {
             callback();
         } else {
-            res.status(403).send('Authorization failed.');
+            res.status(403).send('Not authorized.');
         }
     }
 }

@@ -19,4 +19,11 @@ async function getCollectionNames(userKey, database) {
     }
 }
 
-module.exports = { getCollectionNames };
+async function getCollectionData(userKey, collectionName, database) {
+    let role = await returnRole(userKey);
+    if (role === 'admin') {
+        console.log('');
+    }
+}
+
+module.exports = { getCollectionNames, getCollectionData };
