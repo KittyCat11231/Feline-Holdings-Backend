@@ -19,11 +19,11 @@ const client = new MongoClient(process.env.MONGODB_URI, {
     connectTimeoutMS: 100000,
 });
 
+const { updateIntraRoute } = require('../database-console/update-intraroute');
+
 const dbname = 'felineHoldings';
-const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
 
 const mongoSanitize = require('express-mongo-sanitize');
-app.use(mongoSanitize());
 
 async function connectToDatabase() {
     try {
@@ -38,7 +38,8 @@ async function connectToDatabase() {
 
 connectToDatabase();
 
-const  { requireAuth } = require('../database-console/authorization');
+const { requireAuth } = require('../database-console/authorization');
+const { getCollectionNames, getCollectionData } = require('../database-console/search');
 
 app.use(express.json());
 
@@ -62,6 +63,7 @@ app.get('/intraroute', (req, res) => {
 })
 
 app.get('/mbs/recent-videos', (req, res) => {
+    const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
     async function findVideos() {
         try {
             let videos = await mbsRecentVideos.find({}).sort({ date: -1 }).toArray();
@@ -96,16 +98,21 @@ app.get('/mbs/live-now', (req, res) => {
 
 app.post('/protected/admin', (req, res) => {
     requireAuth(req, res, 'admin', () => {
-        res.status(200).send('Authorization accepted!');
+        res.status(200).send('Authentication accepted!');
     })
 })
 
 app.post('/protected/blutransit', (req, res) => {
     requireAuth(req, res, 'bluTransit', () => {
-        res.status(200).send('Authorization accepted!');
+        res.status(200).send('Authentication accepted!');
     })
 })
 
+app.post('/database/intraroute', (req, res) => {
+  requireAuth(req, res, 'admin', () => {
+    updateIntraRoute(client, res);
+  })
+})
 
 app.listen(3000, () => {
     console.log(`Listening on port 3000.`);
