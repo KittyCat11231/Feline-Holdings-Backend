@@ -108,40 +108,10 @@ app.post('/protected/blutransit', (req, res) => {
     })
 })
 
-app.post('/database/get-collection-names', (req, res) => {
-    console.log(mongoSanitize.has(req))
-    mongoSanitize.sanitize(req);
-    if (!req.body.key) {
-        res.status(403).send('Not authorized.');
-    } else {
-        async function response() {
-            let database = client.db(dbname);
-            let collectionNames = await getCollectionNames(req.body.key, database);
-            if (collectionNames) {
-                res.status(200).send(collectionNames);
-            } else {
-                res.status(403).send('Not authorized.');
-            }
-        }
-        response();
-    }
-});
-
-<<<<<<< Updated upstream
 app.post('/database/intraroute', (req, res) => {
   requireAuth(req, res, 'admin', () => {
     updateIntraRoute(client, res);
   })
-=======
-app.post('/database/get-collection-data', (req, res) => {
-    if (!req.body.key) {
-        res.status(403).send('Authorization failed.');
-    } else {
-        async function response() {
-            let database = client.db(dbname);
-        }
-    }
->>>>>>> Stashed changes
 })
 
 app.listen(3000, () => {
