@@ -1,0 +1,11 @@
+{
+    "routes": [
+        "walk",
+        "walkToMandela",
+        "walkToBluemont",
+        "marinaShuttleNorth",
+        "marinaShuttleSouth",
+        "yellowLineToParkour",
+        "yellowLineToForestville"
+    ]
+}

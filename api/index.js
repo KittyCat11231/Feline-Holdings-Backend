@@ -6,6 +6,9 @@ const app = express();
 
 const cors = require('cors');
 
+const { parseFilters } = require('../intraroute-platform/parse-filters');
+const { intraRoutePlatform } = require('../intraroute-platform/intraroute-platform');
+
 app.use(cors({
     origin: ['https://felineholdings.com', 'https://console.felineholdings.com']
 }));
@@ -54,14 +57,6 @@ app.get('/echoback', (req, res) => {
     })
 })
 
-app.get('/intraroute', (req, res) => {
-    if (req.query.start && req.query.end) {
-        res.send(`Once IntraRoute's API is complete, this request will return a route from ${req.query.start} to ${req.query.end}`);
-    } else {
-        res.send('IntraRoute API coming soon.')
-    }
-})
-
 app.get('/mbs/recent-videos', (req, res) => {
     const mbsRecentVideos = client.db(dbname).collection('mbsRecentVideos');
     async function findVideos() {
@@ -108,10 +103,39 @@ app.post('/protected/blutransit', (req, res) => {
     })
 })
 
-app.post('/database/intraroute', (req, res) => {
+app.post('/database/update/intra', (req, res) => {
   requireAuth(req, res, 'admin', () => {
     updateIntraRoute(client, res);
   })
+})
+
+async function intraRoute(req, res, hasBody) {
+    try {
+        let body = {};
+        if (hasBody) {
+            body = req.body;
+        }
+        let filters = parseFilters(body, 'intra');
+        let returnType;
+        if (req.query.type === 'simple-json' || req.query.type === 'plain-text') {
+            returnType = req.query.type;
+        } else {
+            returnType = 'json'
+        }
+        let path = await intraRoutePlatform(req.query.start, req.query.end, filters, 'intra', returnType, client.db(dbname));
+        res.status(200).send(path);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error);
+    }
+}
+
+app.post('/intraroute', (req, res) => {
+    intraRoute(req, res);
+})
+
+app.get('/intraroute', (req, res) => {
+    intraRoute(req, res);
 })
 
 app.listen(3000, () => {
