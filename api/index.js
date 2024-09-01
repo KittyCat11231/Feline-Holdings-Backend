@@ -131,11 +131,11 @@ async function intraRoute(req, res, hasBody) {
 }
 
 app.post('/intraroute', (req, res) => {
-    intraRoute(req, res);
+    intraRoute(req, res, true);
 })
 
 app.get('/intraroute', (req, res) => {
-    intraRoute(req, res);
+    intraRoute(req, res, false);
 })
 
 app.listen(3000, () => {
