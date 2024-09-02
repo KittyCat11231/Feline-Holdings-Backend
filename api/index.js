@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const { parseFilters } = require('../intraroute-platform/parse-filters');
 const { intraRoutePlatform } = require('../intraroute-platform/intraroute-platform');
+const { getStopsList } = require('../intraroute-platform/get-stops-list');
 
 app.use(cors({
     origin: ['https://felineholdings.com', 'https://console.felineholdings.com']
@@ -136,6 +137,29 @@ app.post('/intraroute', (req, res) => {
 
 app.get('/intraroute', (req, res) => {
     intraRoute(req, res, false);
+})
+
+async function intraRouteStopsList(req, res, hasBody) {
+    try {
+        let body = {};
+        if (hasBody) {
+            body = req.body;
+        }
+        let filters = parseFilters(body, 'intra');
+        let stopsList = await getStopsList(filters, 'intra', client.db(dbname));
+        res.status(200).send(stopsList);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error);
+    }
+}
+
+app.post('/intraroute/stops-list', (req, res) => {
+    intraRouteStopsList(req, res, true);
+})
+
+app.get('/intraroute/stops-list', (req, res) => {
+    intraRouteStopsList(req, res, false);
 })
 
 app.listen(3000, () => {

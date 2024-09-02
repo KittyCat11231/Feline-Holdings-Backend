@@ -1,3 +1,5 @@
+const { helpers } = '@kyle11231/helper-functions'
+
 function simpleJson(inputPath) {
     class PathSegment {
         constructor(stop1, stop2, route, towards, numOfStops) {
@@ -32,14 +34,14 @@ function simpleJson(inputPath) {
 
     for (let segment of inputPath) {
         let stop1stopName;
-        if ((segment.stop1.stopName !== 'null' && segment.stop1.stopName !== null)) {
+        if (!helpers.isNull(segment.stop1.stopName)) {
             stop1stopName = `${segment.stop1.city} ${segment.stop1.stopName} (${modeNames.get(segment.stop1.mode)})`;
         } else {
             stop1stopName = `${segment.stop1.city} (${modeNames.get(segment.stop1.mode)})`;
         }
 
         let stop2stopName;
-        if ((segment.stop2.stopName !== 'null' && segment.stop2.stopName !== null)) {
+        if (!helpers.isNull(segment.stop2.stopName)) {
             stop2stopName = `${segment.stop2.city} ${segment.stop2.stopName} (${modeNames.get(segment.stop2.mode)})`;
         } else {
             stop2stopName = `${segment.stop2.city} (${modeNames.get(segment.stop2.mode)})`;
@@ -114,8 +116,8 @@ function simpleJson(inputPath) {
         }
 
         let destination;
-        if (segment.route.destinationStopName !== 'null' && segment.route.destinationStopName !== null) {
-            destination = `${segment.route.destinationCity} ${segment.route.destinationCity}`;
+        if (!helpers.isNull(segment.route.destinationStopName)) {
+            destination = `${segment.route.destinationCity} ${segment.route.destinationStopName}`;
         } else {
             destination = segment.route.destinationCity;
         }
