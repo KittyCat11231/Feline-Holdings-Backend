@@ -1,11 +1,7 @@
-const { helpers } = require('@kyle11231/helper-functions');
-
 function buildStopData(stopId, allStops) {
     class Route {
-      constructor(id, meta1, meta2, stops) {
+      constructor(id, stops) {
         this.id = id;
-        this.meta1 = meta1;
-        this.meta2 = meta2;
         this.stops = stops;
       }
     }
@@ -22,8 +18,28 @@ function buildStopData(stopId, allStops) {
     
     for (let route of userStop.routes) {
       let stops = [];
-      routes.push(new Route(route.id, route.meta1, route.meta2, stops))
+      
+      let currentStop = userStop;
+
+      for (let i = 0; i < 200; i++) {
+        let breakLoop = true;
+        for (let adjStop in currentStop.adjacentStops) {
+            if (adjStop.routes.includes(route.id)) {
+                stops.push(adjStop.id);
+                breakLoop = false;
+                currentStop = stopsMap.get(adjStop);
+                break;
+            }
+        }
+        if (breakLoop) {
+            break;
+        }
+      }
+
+      routes.push(new Route(route.id, stops))
     }
+
+    return routes;
 }
 
 module.exports = { buildStopData };
