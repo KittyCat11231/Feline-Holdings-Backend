@@ -1,4 +1,4 @@
-function buildStopData(stopId, allStops) {
+function getStopRoutes(stopId, allStops) {
     class Route {
       constructor(id, stops) {
         this.id = id;
@@ -42,4 +42,4 @@ function buildStopData(stopId, allStops) {
     return routes;
 }
 
-module.exports = { buildStopData };
+module.exports = { getStopRoutes };
