@@ -27,7 +27,7 @@ function buildStopData(stopId, allStops) {
             if (adjStop.routes.includes(route.id)) {
                 stops.push(adjStop.id);
                 breakLoop = false;
-                currentStop = stopsMap.get(adjStop);
+                currentStop = stopsMap.get(adjStop.id);
                 break;
             }
         }
