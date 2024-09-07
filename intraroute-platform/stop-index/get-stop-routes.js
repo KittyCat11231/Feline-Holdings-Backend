@@ -1,15 +1,9 @@
-function getStopRoutes(stopId, allStops) {
+function getStopRoutes(stopId, allStops, stopsMap) {
     class Route {
       constructor(id, stops) {
         this.id = id;
         this.stops = stops;
       }
-    }
-    
-    let stopsMap = new Map();
-    
-    for (let stop of allStops) {
-      stopsMap.set(stop.id, stop);
     }
     
     let userStop = stopsMap.get(stopId);
@@ -23,7 +17,7 @@ function getStopRoutes(stopId, allStops) {
 
       for (let i = 0; i < 200; i++) {
         let breakLoop = true;
-        for (let adjStop in currentStop.adjacentStops) {
+        for (let adjStop of currentStop.adjacentStops) {
             if (adjStop.routes.includes(route.id)) {
                 stops.push(adjStop.id);
                 breakLoop = false;
