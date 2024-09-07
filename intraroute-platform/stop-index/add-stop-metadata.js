@@ -61,3 +61,5 @@ function addStopMetadata(routes, stopId, allStops, stopsMap) {
   
   return routes;
 }
+
+module.exports = { addStopMetadata };
