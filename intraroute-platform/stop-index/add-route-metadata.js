@@ -29,3 +29,5 @@ function addRouteMetadata(routes, stopId, allStops, stopsMap, allRoutes, routesM
   
   return routes;
 }
+
+module.exports = { addRouteMetadata };
