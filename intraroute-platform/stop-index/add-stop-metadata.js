@@ -25,7 +25,7 @@ function addStopMetadata(routes, stopId, allStops, stopsMap) {
   for (let route of routes) {
     let directionKeywords = ['north', 'south', 'east', 'west', 'cw', 'ccw'];
     
-    let routeIdNoDirection;
+    let routeIdNoDirection = route.id;
     
     for (let direction of directionKeywords) {
       if (route.id.includes(direction)) {
