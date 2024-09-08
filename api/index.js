@@ -9,6 +9,7 @@ const cors = require('cors');
 const { parseFilters } = require('../intraroute-platform/parse-filters');
 const { intraRoutePlatform } = require('../intraroute-platform/intraroute-platform');
 const { getStopsList } = require('../intraroute-platform/get-stops-list');
+const { intraRoutePlatformIndex } = require('../intraroute-platform/stop-index/intraroute-platform-index');
 
 app.use(cors({
     origin: ['https://felineholdings.com', 'https://console.felineholdings.com']
@@ -160,6 +161,29 @@ app.post('/intraroute/stops-list', (req, res) => {
 
 app.get('/intraroute/stops-list', (req, res) => {
     intraRouteStopsList(req, res, false);
+})
+
+async function intraDex(req, res, hasBody) {
+  try {
+    let body = {};
+    if (hasBody) {
+      body = req.body;
+    }
+    let filters = parseFilters(body, 'intra');
+    let stop = intraRoutePlatformIndex(req.query.stop, filters, 'intra', client.db(dbname));
+    res.status(200).send(stop);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+}
+
+app.post('/dev/intradex', (req, res) => {
+  intraDex(req, res, true);
+})
+
+app.get('/dev/intradex', (req, res) => {
+  intraDex(req, res, false);
 })
 
 app.listen(3000, () => {
