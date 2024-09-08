@@ -3,6 +3,7 @@ const { getStopsData, getRoutesData } = require('../get-data');
 const { getStopRoutes } = require('./get-stop-routes');
 const { addRouteMetadata } = require('./add-route-metadata');
 const { addStopMetadata } = require('./add-stop-metadata');
+const { addTransferData } = require('./add-transfer-data');
 
 async function IntraRoutePlatformIndex(stopId, filters, company, returnType, database) {
     let allStops = await getStopsData(filters, company, database);
@@ -36,6 +37,8 @@ async function IntraRoutePlatformIndex(stopId, filters, company, returnType, dat
     routes = addRouteMetadata(routes, stopId, allStops, stopsMap, allRoutes, routesMap);
     
     routes = addStopMetadata(routes, stopId, allStops, stopsMap);
+    
+    routes = addTransferData(routes, allRoutes, routesMap);
     
     return(new Stop(stopId, userStop.mode, userStop.city, userStop.stopName, routes));
 }
