@@ -16,26 +16,36 @@ function addTransferData(routes, allRoutes, routesMap) {
   
   for (let route of routes) {
     for (let stop of routes.stops) {
-      let transfersIds = [];
-      let directionKeywords = ['north', 'south', 'east', 'west', 'cw', 'ccw'];
+      let transfers = [];
       
       for (let transferId of stop.transfers) {
-        let transferIdWithoutDirection = transferId;
-        for (let direction of directionKeywords) {
-          if (transferId.includes(direction)) {
-            transferIdWithoutDirection = transferId.split(direction)[0];
-          }
-        }
-        if (!transfersIds.includes(transferIdWithhoutDirection)) {
-          transfersIds.push(transferId);
-        }
+        let transferRoute = routesMap.get(transferId);
+        
+        transfers.push(new Transfer([transferId], transferRoute.mode, transferRoute.type, transferRoute.bullet, transferRoute.num, transferRoute.altText, transferRoute.routeName, transferRoute.codeshares));
       }
       
-      for (let transferId of transfersIds) {
+      for (let i = 0; i < (transfers.length - 1);) {
+        let directionKeywords = ['north', 'south', 'east', 'west', 'cw', 'ccw'];
         
+        let idNoKeyword = transfers[i].ids[0];
+        
+        for (let direction of directionKeywords) {
+          if (idNoKeyword.includes(direction)) {
+            idNoKeyword = idNoKeyword.split(direction)[0];
+          }
+        }
+        
+        if (transfers[i + 1].ids[0].includes(idNoKeyword)) {
+          transfers[i].ids = transfers[i].ids.concat(transfers[i + 1].ids);
+          transfers = helpers.removeFromArray(transfers[i + 1]);
+        } else {
+          i++;
+        }
       }
+      stop.transfers = transfers;
     }
   }
+  return routes;
 }
 
 module.exports = { addTransferData };
