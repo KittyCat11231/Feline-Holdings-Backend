@@ -132,11 +132,13 @@ async function intraRoute(req, res, hasBody) {
 }
 
 app.post('/intraroute', (req, res) => {
-    intraRoute(req, res, true);
+    // intraRoute(req, res, true);
+    res.status(503).send('The IntraRoute API is temporarily unavailable.');
 })
 
 app.get('/intraroute', (req, res) => {
-    intraRoute(req, res, false);
+    // intraRoute(req, res, false);
+    res.status(503).send('The IntraRoute API is temporarily unavailable.');
 })
 
 async function intraRouteStopsList(req, res, hasBody) {
@@ -155,11 +157,13 @@ async function intraRouteStopsList(req, res, hasBody) {
 }
 
 app.post('/intraroute/stops-list', (req, res) => {
-    intraRouteStopsList(req, res, true);
+    // intraRouteStopsList(req, res, true);
+    res.status(503).send('The IntraRoute API is temporarily unavailable.');
 })
 
 app.get('/intraroute/stops-list', (req, res) => {
-    intraRouteStopsList(req, res, false);
+    // intraRouteStopsList(req, res, false);
+    res.status(503).send('The IntraRoute API is temporarily unavailable.');
 })
 
 app.listen(3000, () => {
